@@ -1,0 +1,1129 @@
+---
+# Source: dolphinscheduler-helm/templates/rbac.yaml
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: dolphinscheduler
+    chart: dolphinscheduler-helm-3.2.0
+    release: dolphinscheduler
+  name: dolphinscheduler
+---
+# Source: dolphinscheduler-helm/templates/secret-external-database.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dolphinscheduler-externaldb
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-externaldb
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+type: Opaque
+data:
+  database-password: "ZTZOM0xUWG5Gdg=="
+---
+# Source: dolphinscheduler-helm/templates/configmap-dolphinscheduler-common.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dolphinscheduler-common
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-common
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+data:
+  DATAX_LAUNCHER: "/opt/soft/datax/bin/datax.py"
+  DATA_BASEDIR_PATH: "/tmp/dolphinscheduler"
+  DOLPHINSCHEDULER_OPTS: ""
+  FLINK_HOME: "/opt/soft/flink"
+  HADOOP_CONF_DIR: "/opt/soft/hadoop/etc/hadoop"
+  HADOOP_HOME: "/opt/soft/hadoop"
+  HIVE_HOME: "/opt/soft/hive"
+  JAVA_HOME: "/opt/java/openjdk"
+  PYTHON_LAUNCHER: "/usr/bin/python/bin/python3"
+  RESOURCE_UPLOAD_PATH: "/dolphinscheduler"
+  SPARK_HOME: "/opt/soft/spark"
+---
+# Source: dolphinscheduler-helm/templates/configmap.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dolphinscheduler-configs
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-common
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+data:
+  common_properties: |-
+    alert.rpc.port=50052
+    appId.collect=log
+    conda.path=/opt/anaconda3/etc/profile.d/conda.sh
+    data-quality.jar.name=dolphinscheduler-data-quality-dev-SNAPSHOT.jar
+    data.basedir.path=/tmp/dolphinscheduler
+    datasource.encryption.enable=false
+    datasource.encryption.salt=!@#$%^&*
+    development.state=false
+    hadoop.security.authentication.startup.state=false
+    java.security.krb5.conf.path=/opt/krb5.conf
+    kerberos.expire.time=2
+    login.user.keytab.path=/opt/hdfs.headless.keytab
+    login.user.keytab.username=hdfs-mycluster@ESZ.COM
+    ml.mlflow.preset_repository=https://github.com/apache/dolphinscheduler-mlflow
+    ml.mlflow.preset_repository_version=main
+    resource.alibaba.cloud.access.key.id=<your-access-key-id>
+    resource.alibaba.cloud.access.key.secret=<your-access-key-secret>
+    resource.alibaba.cloud.oss.bucket.name=dolphinscheduler
+    resource.alibaba.cloud.oss.endpoint=https://oss-cn-hangzhou.aliyuncs.com
+    resource.alibaba.cloud.region=cn-hangzhou
+    resource.aws.access.key.id=admin
+    resource.aws.region=ca-central-1
+    resource.aws.s3.bucket.name=dolphinscheduler
+    resource.aws.s3.endpoint=http://192.168.100.100:30735
+    resource.aws.secret.access.key=RmX4tqePuQ
+    resource.azure.client.id=minioadmin
+    resource.azure.client.secret=minioadmin
+    resource.azure.subId=minioadmin
+    resource.azure.tenant.id=minioadmin
+    resource.hdfs.fs.defaultFS=hdfs://mycluster:8020
+    resource.hdfs.root.user=hdfs
+    resource.manager.httpaddress.port=8088
+    resource.storage.type=S3
+    resource.storage.upload.base.path=/dolphinscheduler
+    sudo.enable=true
+    support.hive.oneSession=false
+    task.resource.limit.state=false
+    yarn.application.status.address=http://ds1:%s/ws/v1/cluster/apps/%s
+    yarn.job.history.status.address=http://ds1:19888/ws/v1/history/mapreduce/jobs/%s
+    yarn.resourcemanager.ha.rm.ids=192.168.xx.xx,192.168.xx.xx
+---
+# Source: dolphinscheduler-helm/templates/rbac.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dolphinscheduler
+  labels:
+    app: dolphinscheduler
+    chart: "dolphinscheduler-helm-3.2.0"
+    release: "dolphinscheduler"
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "watch", "list"]
+---
+# Source: dolphinscheduler-helm/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: dolphinscheduler
+  labels:
+    app: dolphinscheduler
+    chart: "dolphinscheduler-helm-3.2.0"
+    release: "dolphinscheduler"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: dolphinscheduler
+subjects:
+  - kind: ServiceAccount
+    name: dolphinscheduler
+    namespace: ds-service
+---
+# Source: dolphinscheduler-helm/templates/svc-dolphinscheduler-alert.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: dolphinscheduler-alert
+  namespace: ds-service
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-alert
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  ports:
+    - port: 50052
+      targetPort: alert-port
+      protocol: TCP
+      name: alert-port
+    - port: 50053
+      targetPort: actuator-port
+      protocol: TCP
+      name: actuator-port
+  selector:
+    app.kubernetes.io/name: dolphinscheduler-alert
+    app.kubernetes.io/component: alert
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+---
+# Source: dolphinscheduler-helm/templates/svc-dolphinscheduler-api.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: dolphinscheduler-api
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-api
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  type: ClusterIP
+  ports:
+    - port: 12345
+      targetPort: api-port
+      protocol: TCP
+      name: api-port
+    - port: 25333
+      targetPort: python-api-port
+      protocol: TCP
+      name: python-api-port
+  selector:
+    app.kubernetes.io/name: dolphinscheduler-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+---
+# Source: dolphinscheduler-helm/templates/svc-dolphinscheduler-master-headless.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: dolphinscheduler-master-headless
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-master-headless
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  clusterIP: "None"
+  ports:
+    - port: 5678
+      targetPort: master-port
+      protocol: TCP
+      name: master-port
+    - port: 5679
+      targetPort: actuator-port
+      protocol: TCP
+      name: actuator-port
+  selector:
+    app.kubernetes.io/name: dolphinscheduler-master
+    app.kubernetes.io/component: master
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+---
+# Source: dolphinscheduler-helm/templates/svc-dolphinscheduler-worker-headless.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: dolphinscheduler-worker-headless
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-worker-headless
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  clusterIP: "None"
+  ports:
+    - port: 1234
+      targetPort: worker-port
+      protocol: TCP
+      name: worker-port
+    - port: 1235
+      targetPort: actuator-port
+      protocol: TCP
+      name: actuator-port
+  selector:
+    app.kubernetes.io/name: dolphinscheduler-worker
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+---
+# Source: dolphinscheduler-helm/templates/deployment-dolphinscheduler-alert.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dolphinscheduler-alert
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-alert
+    app.kubernetes.io/component: alert
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dolphinscheduler-alert
+      app.kubernetes.io/component: alert
+      app.kubernetes.io/instance: dolphinscheduler
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/version: 3.2.0
+  strategy:
+    type: "RollingUpdate"
+    rollingUpdate:
+      maxSurge: "25%"
+      maxUnavailable: "25%"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dolphinscheduler-alert
+        app.kubernetes.io/component: alert
+        app.kubernetes.io/instance: dolphinscheduler
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/version: 3.2.0
+    spec:
+      serviceAccountName: dolphinscheduler
+      containers:
+        - name: dolphinscheduler-alert
+          image: 192.168.100.105:8082/dolphinscheduler-alert-server:3.2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 50052
+              name: "alert-port"
+            - containerPort: 50053
+              name: "actuator-port"
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: SPRING_JACKSON_TIME_ZONE
+              value: Asia/Shanghai
+            - name: DATABASE
+              value: "mysql"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://192.168.100.100:31323/dolphinscheduler?characterEncoding=utf8
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dolphinscheduler-externaldb
+                  key: database-password
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: "com.mysql.cj.jdbc.Driver"
+            - name: REGISTRY_TYPE
+              value: zookeeper
+            - name: REGISTRY_ZOOKEEPER_CONNECT_STRING
+              value: zookeeper:2181
+            
+            - name: JAVA_OPTS
+              value: "-Xms512m -Xmx512m -Xmn256m"
+            
+          envFrom:
+            - configMapRef:
+                name: dolphinscheduler-common
+          livenessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:50053/actuator/health/liveness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:50053/actuator/health/readiness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: "/opt/dolphinscheduler/logs"
+              name: dolphinscheduler-alert
+            - name: config-volume
+              mountPath: /opt/dolphinscheduler/conf/common.properties
+              subPath: common_properties
+      volumes:
+        - name: dolphinscheduler-alert
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: dolphinscheduler-configs
+---
+# Source: dolphinscheduler-helm/templates/deployment-dolphinscheduler-api.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dolphinscheduler-api
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-api
+    app.kubernetes.io/component: api
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dolphinscheduler-api
+      app.kubernetes.io/component: api
+      app.kubernetes.io/instance: dolphinscheduler
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/version: 3.2.0
+  strategy:
+    type: "RollingUpdate"
+    rollingUpdate:
+      maxSurge: "25%"
+      maxUnavailable: "25%"
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dolphinscheduler-api
+        app.kubernetes.io/component: api
+        app.kubernetes.io/instance: dolphinscheduler
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/version: 3.2.0
+    spec:
+      serviceAccountName: dolphinscheduler
+      containers:
+        - name: dolphinscheduler-api
+          image: 192.168.100.105:8082/dolphinscheduler-api:3.2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 12345
+              name: "api-port"
+            - containerPort: 25333
+              name: "python-api-port"
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: SPRING_JACKSON_TIME_ZONE
+              value: Asia/Shanghai
+            - name: DATABASE
+              value: "mysql"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://192.168.100.100:31323/dolphinscheduler?characterEncoding=utf8
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dolphinscheduler-externaldb
+                  key: database-password
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: "com.mysql.cj.jdbc.Driver"
+            - name: REGISTRY_TYPE
+              value: zookeeper
+            - name: REGISTRY_ZOOKEEPER_CONNECT_STRING
+              value: zookeeper:2181
+            - name: SECURITY_AUTHENTICATION_TYPE
+              value: "PASSWORD"
+            
+            - name: JAVA_OPTS
+              value: "-Xms512m -Xmx512m -Xmn256m"
+            
+          envFrom:
+            - configMapRef:
+                name: dolphinscheduler-common
+          livenessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:12345/dolphinscheduler/actuator/health/liveness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:12345/dolphinscheduler/actuator/health/readiness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: "/opt/dolphinscheduler/logs"
+              name: dolphinscheduler-api
+            - name: config-volume
+              mountPath: /opt/dolphinscheduler/conf/common.properties
+              subPath: common_properties
+            
+            
+            
+            
+      volumes:
+        - name: dolphinscheduler-api
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: dolphinscheduler-configs
+---
+# Source: dolphinscheduler-helm/templates/statefulset-dolphinscheduler-master.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dolphinscheduler-master
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-master
+    app.kubernetes.io/component: master
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dolphinscheduler-master
+      app.kubernetes.io/component: master
+      app.kubernetes.io/instance: dolphinscheduler
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/version: 3.2.0
+  serviceName: dolphinscheduler-master-headless
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dolphinscheduler-master
+        app.kubernetes.io/component: master
+        app.kubernetes.io/instance: dolphinscheduler
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/version: 3.2.0
+    spec:
+      serviceAccountName: dolphinscheduler
+      containers:
+        - name: dolphinscheduler-master
+          image: 192.168.100.105:8082/dolphinscheduler-master:3.2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5678
+              name: "master-port"
+            - containerPort: 5679
+              name: "actuator-port"
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: SPRING_JACKSON_TIME_ZONE
+              value: Asia/Shanghai
+            - name: DATABASE
+              value: "mysql"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://192.168.100.100:31323/dolphinscheduler?characterEncoding=utf8
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dolphinscheduler-externaldb
+                  key: database-password
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: "com.mysql.cj.jdbc.Driver"
+            - name: REGISTRY_TYPE
+              value: zookeeper
+            - name: REGISTRY_ZOOKEEPER_CONNECT_STRING
+              value: zookeeper:2181
+            
+            - name: JAVA_OPTS
+              value: "-Xms1g -Xmx1g -Xmn512m"
+            
+            - name: MASTER_DISPATCH_TASK_NUM
+              value: "3"
+            
+            - name: MASTER_EXEC_TASK_NUM
+              value: "20"
+            
+            - name: MASTER_EXEC_THREADS
+              value: "100"
+            
+            - name: MASTER_FAILOVER_INTERVAL
+              value: "10m"
+            
+            - name: MASTER_HEARTBEAT_ERROR_THRESHOLD
+              value: "5"
+            
+            - name: MASTER_HEARTBEAT_INTERVAL
+              value: "10s"
+            
+            - name: MASTER_HOST_SELECTOR
+              value: "LowerWeight"
+            
+            - name: MASTER_KILL_APPLICATION_WHEN_HANDLE_FAILOVER
+              value: "true"
+            
+            - name: MASTER_MAX_CPU_LOAD_AVG
+              value: "1"
+            
+            - name: MASTER_RESERVED_MEMORY
+              value: "0.3"
+            
+            - name: MASTER_STATE_WHEEL_INTERVAL
+              value: "5s"
+            
+            - name: MASTER_TASK_COMMIT_INTERVAL
+              value: "1s"
+            
+            - name: MASTER_TASK_COMMIT_RETRYTIMES
+              value: "5"
+            
+          envFrom:
+            - configMapRef:
+                name: dolphinscheduler-common
+          livenessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:5679/actuator/health/liveness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:5679/actuator/health/readiness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: "/opt/dolphinscheduler/logs"
+              name: dolphinscheduler-master
+            
+            - name: config-volume
+              mountPath: /opt/dolphinscheduler/conf/common.properties
+              subPath: common_properties
+            
+      volumes:
+        - name: dolphinscheduler-master
+          emptyDir: {}
+        
+        - name: config-volume
+          configMap:
+            name: dolphinscheduler-configs
+---
+# Source: dolphinscheduler-helm/templates/statefulset-dolphinscheduler-worker.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dolphinscheduler-worker
+  labels:
+    app.kubernetes.io/name: dolphinscheduler-worker
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dolphinscheduler-worker
+      app.kubernetes.io/component: worker
+      app.kubernetes.io/instance: dolphinscheduler
+      app.kubernetes.io/managed-by: Helm
+      app.kubernetes.io/version: 3.2.0
+  serviceName: dolphinscheduler-worker-headless
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dolphinscheduler-worker
+        app.kubernetes.io/component: worker
+        app.kubernetes.io/instance: dolphinscheduler
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/version: 3.2.0
+    spec:
+      serviceAccountName: dolphinscheduler
+      containers:
+        - name: dolphinscheduler-worker
+          image: 192.168.100.105:8082/dolphinscheduler-worker:3.2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 1234
+              name: "worker-port"
+            - containerPort: 1235
+              name: "actuator-port"
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: SPRING_JACKSON_TIME_ZONE
+              value: Asia/Shanghai
+            - name: DATABASE
+              value: "mysql"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://192.168.100.100:31323/dolphinscheduler?characterEncoding=utf8
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dolphinscheduler-externaldb
+                  key: database-password
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: "com.mysql.cj.jdbc.Driver"
+            - name: REGISTRY_TYPE
+              value: zookeeper
+            - name: REGISTRY_ZOOKEEPER_CONNECT_STRING
+              value: zookeeper:2181
+            
+            - name: WORKER_EXEC_THREADS
+              value: "100"
+            
+            - name: WORKER_HEARTBEAT_INTERVAL
+              value: "10s"
+            
+            - name: WORKER_HEART_ERROR_THRESHOLD
+              value: "5"
+            
+            - name: WORKER_HOST_WEIGHT
+              value: "100"
+            
+            - name: WORKER_MAX_CPU_LOAD_AVG
+              value: "1"
+            
+            - name: WORKER_RESERVED_MEMORY
+              value: "0.3"
+            
+          envFrom:
+            - configMapRef:
+                name: dolphinscheduler-common
+          livenessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:1235/actuator/health/liveness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command: ["curl", "-s", "http://localhost:1235/actuator/health/readiness"]
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - mountPath: "/tmp/dolphinscheduler"
+              name: dolphinscheduler-worker-data
+            - mountPath: "/opt/dolphinscheduler/logs"
+              name: dolphinscheduler-worker-logs
+            - name: config-volume
+              mountPath: /opt/dolphinscheduler/conf/common.properties
+              subPath: common_properties
+            
+            
+            
+      volumes:
+        - name: dolphinscheduler-worker-data
+          emptyDir: {}
+        - name: dolphinscheduler-worker-logs
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: dolphinscheduler-configs
+---
+# Source: dolphinscheduler-helm/templates/ingress.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# Source: dolphinscheduler-helm/templates/keda-autoscaler-worker.yaml
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+################################
+## DolphinScheduler Worker KEDA Scaler
+#################################
+---
+# Source: dolphinscheduler-helm/templates/pvc-dolphinscheduler-alert.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# Source: dolphinscheduler-helm/templates/pvc-dolphinscheduler-api.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# Source: dolphinscheduler-helm/templates/pvc-dolphinscheduler-fs-file.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# Source: dolphinscheduler-helm/templates/pvc-dolphinscheduler-shared.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# Source: dolphinscheduler-helm/templates/secret-external-etcd-ssl.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# Source: dolphinscheduler-helm/templates/secret-external-ldap-ssl.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+---
+# Source: dolphinscheduler-helm/templates/job-dolphinscheduler-schema-initializer.yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: dolphinscheduler-db-init-job
+  labels:
+    app.kubernetes.io/instance: dolphinscheduler
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/version: 3.2.0
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade,post-rollback
+    "helm.sh/hook-weight": "1"
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: dolphinscheduler
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/version: 3.2.0
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: wait-for-database
+        image: busybox:1.30.1
+        imagePullPolicy: IfNotPresent
+        command: ['sh', '-xc', 'for i in $(seq 1 180); do nc -z -w3 192.168.100.100 31323 && exit 0 || sleep 5; done; exit 1']
+      containers:
+        - name: dolphinscheduler-db-init-job
+          image: 192.168.100.105:8082/dolphinscheduler-tools:3.2.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - tools/bin/upgrade-schema.sh
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: SPRING_JACKSON_TIME_ZONE
+              value: Asia/Shanghai
+            - name: DATABASE
+              value: "mysql"
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://192.168.100.100:31323/dolphinscheduler?characterEncoding=utf8
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dolphinscheduler-externaldb
+                  key: database-password
+            - name: SPRING_DATASOURCE_DRIVER-CLASS-NAME
+              value: "com.mysql.cj.jdbc.Driver"
+            - name: REGISTRY_TYPE
+              value: zookeeper
+            - name: REGISTRY_ZOOKEEPER_CONNECT_STRING
+              value: zookeeper:2181
+          envFrom:
+            - configMapRef:
+                name: dolphinscheduler-common
