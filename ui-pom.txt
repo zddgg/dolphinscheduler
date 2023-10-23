@@ -1,0 +1,51 @@
+mvn -B clean deploy -Dmaven.test.skip -Dmaven.javadoc.skip -Dspotless.skip=true -Dmaven.deploy.skip -Pdocker -Prelease -Ddocker.hub=192.168.100.105:8082
+
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>exec-maven-plugin</artifactId>
+    <version>${exec-maven-plugin.version}</version>
+    <configuration>
+        <skip>${build.ui.skip}</skip>
+    </configuration>
+    <executions>
+        <execution>
+            <id>docker-build</id>
+            <configuration>
+                <skip>true</skip>
+            </configuration>
+        </execution>
+        <execution>
+            <id>docker-push</id>
+            <configuration>
+                <skip>true</skip>
+            </configuration>
+        </execution>
+        <execution>
+            <id>npm install</id>
+            <goals>
+                <goal>exec</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+                <executable>npm</executable>
+                <arguments>
+                    <argument>install</argument>
+                </arguments>
+            </configuration>
+        </execution>
+        <execution>
+            <id>npm run build:prod</id>
+            <goals>
+                <goal>exec</goal>
+            </goals>
+            <phase>package</phase>
+            <configuration>
+                <executable>npm</executable>
+                <arguments>
+                    <argument>run</argument>
+                    <argument>build:prod</argument>
+                </arguments>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
